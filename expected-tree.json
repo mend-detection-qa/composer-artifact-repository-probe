@@ -1,0 +1,43 @@
+{
+    "schema_version": "1.0",
+    "pm": "composer",
+    "lockfile": "composer.lock",
+    "pattern": "artifact-repository",
+    "notes": "acme/local-lib 1.0.0 is resolved from a Composer artifact-type repository (a local directory of ZIP archives). The lockfile dist.type is 'zip' and dist.url is a local relative path. Mend must report source type 'url' (not 'registry' and not 'local') and record the artifact path in source_detail.",
+    "packages": [
+        {
+            "name": "acme/local-lib",
+            "version": "1.0.0",
+            "scope": "require",
+            "source": "url",
+            "source_detail": {
+                "url": "./artifacts/acme-local-lib-1.0.0.zip",
+                "dist_type": "zip",
+                "shasum": "ddb121b15dec27cda71fe13db1b1f63ae99f5507"
+            },
+            "direct": true,
+            "children": []
+        }
+    ],
+    "total_packages": 1,
+    "direct_count": 1,
+    "transitive_count": 0,
+    "unique_packages": [
+        "acme/local-lib:1.0.0"
+    ],
+    "mend_detection_expectations": {
+        "acme/local-lib": {
+            "source_must_be": "url",
+            "dist_type": "zip",
+            "dist_url": "./artifacts/acme-local-lib-1.0.0.zip",
+            "must_not_report_as": ["registry", "local"],
+            "note": "Composer artifact repositories produce a lockfile entry with dist.type=zip and a local path URL. Mend should classify this as 'url' source, not 'registry' (Packagist) or 'local' (path-type repository)."
+        },
+        "failure_modes_exercised": [
+            "source reported as 'registry' instead of 'url' for artifact-sourced package",
+            "package entirely missing — Mend skips artifact repository packages",
+            "source reported as 'local' (path-repository confusion) instead of 'url'",
+            "dist.url / artifact path lost from output"
+        ]
+    }
+}
